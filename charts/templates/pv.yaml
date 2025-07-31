@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.pv.Name }}
+spec:
+  accessModes:
+  - {{ .Values.accessMode }} 
+  persistentVolumeReclaimPolicy: Delete
+  capacity:
+    storage: {{ .Values.pv.Storage }}
+  hostPath:
+    path: /tmp/pv

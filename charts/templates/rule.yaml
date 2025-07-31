@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: prometheus
+  name: flaskapp-monitoring-alerts
+  namespace: default
+spec:
+  groups:
+  - name: flaskapp.rules
+    rules:
+    - alert: down
+      expr: up{job="{{ .Values.serviceName }}"} == 0 or absent(up{job="{{ .Values.serviceName }}"})
+      for: 1m
+      labels:
+        severity: critical
+        service: {{ .Values.serviceName }}
+      annotations:
+        summary: "{{ .Values.serviceName }} target is down"
+        description: "Prometheus cannot scrape metrics from the {{ .Values.serviceName }} service for more than 2 minutes."

@@ -1,0 +1,19 @@
+appName: flaskapp
+
+image:
+  name: amine502/flask
+  version: v6.0
+
+configMapName: appconfig
+
+deploymentReplicas: 3
+
+pv: 
+  Name: my-pv
+  Storage: 100Mi
+pvc:
+  Name: my-pvc
+  Storage: 50Mi
+accessMode: ReadWriteMany
+
+serviceName: my-service

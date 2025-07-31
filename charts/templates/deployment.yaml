@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: {{ .Values.appName }}
+  name: my-deployment
+spec:
+  replicas: {{ .Values.deploymentReplicas }}  
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+      - image: "{{ .Values.image.name }}:{{ .Values.image.version }}"
+        name: flask
+        ports:
+          - name: webapp
+            containerPort: 8080
+            protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.configMapName }}
+        volumeMounts:
+        - name: app-data
+          mountPath: /data
+      volumes:
+      - name: app-data
+        persistentVolumeClaim:
+          claimName: {{ .Values.pvc.Name }}
+
+          
